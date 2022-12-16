@@ -34,7 +34,9 @@ public class Section {
             return false;
         }
         Section section = (Section) o;
-        return km == section.km && minute == section.minute && firstStation.equals(section.firstStation) && lastStation.equals(section.lastStation);
+        return km == section.km && minute == section.minute &&
+                firstStation.equals(section.firstStation) &&
+                lastStation.equals(section.lastStation);
     }
 
     @Override

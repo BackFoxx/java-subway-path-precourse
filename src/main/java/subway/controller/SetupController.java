@@ -32,7 +32,9 @@ public class SetupController extends AbstractController {
         saveSection("2호선", "강남역", "역삼역", 2, 3);
     }
 
-    private static void saveSection(String lineName, String startStationName, String endStationName, int km, int minute) {
+    private static void saveSection(String lineName,
+                                    String startStationName, String endStationName,
+                                    int km, int minute) {
         SectionRepository.addSection(new Line(lineName),
                 new Section(
                         new Station(startStationName),

@@ -33,7 +33,8 @@ public class SectionRepository {
 
     private static Section findByFirstAndLastStation(Station firstStation, Station lastStation) {
         return findAll()
-                .stream().filter(eachSection -> eachSection.isFirstStation(firstStation) && eachSection.isLastStation(lastStation))
+                .stream().filter(eachSection -> eachSection.isFirstStation(firstStation) &&
+                        eachSection.isLastStation(lastStation))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(SECTION_NOT_EXISTING));
     }

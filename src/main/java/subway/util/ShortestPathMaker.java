@@ -18,19 +18,17 @@ public class ShortestPathMaker {
 
     public static PathResponse getShortestPathByDistance(Station firstStation, Station lastStation) {
         DijkstraShortestPath dijkstraShortestPath = getShortestPathMaker(Standard.DISTANCE);
-
-        double distance = dijkstraShortestPath.getPathWeight(firstStation, lastStation);
-        List<Station> shortestPath = getShortestPath(firstStation, lastStation, dijkstraShortestPath);
-
-        return new PathResponse(shortestPath, distance);
+        return getPathResponse(firstStation, lastStation, dijkstraShortestPath);
     }
 
     public static PathResponse getShortestPathByTime(Station firstStation, Station lastStation) {
         DijkstraShortestPath dijkstraShortestPath = getShortestPathMaker(Standard.TIME);
+        return getPathResponse(firstStation, lastStation, dijkstraShortestPath);
+    }
 
+    private static PathResponse getPathResponse(Station firstStation, Station lastStation, DijkstraShortestPath dijkstraShortestPath) {
         double distance = dijkstraShortestPath.getPathWeight(firstStation, lastStation);
         List<Station> shortestPath = getShortestPath(firstStation, lastStation, dijkstraShortestPath);
-
         return new PathResponse(shortestPath, distance);
     }
 
@@ -46,12 +44,12 @@ public class ShortestPathMaker {
 
     private static DijkstraShortestPath getShortestPathMaker(Standard distance) {
         List<Section> sections = SectionRepository.findAll();
+
         WeightedMultigraph<Station, DefaultWeightedEdge> graph = new WeightedMultigraph(DefaultWeightedEdge.class);
         addVertexes(graph);
         setEdgeWeights(distance, sections, graph);
 
-        DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
-        return dijkstraShortestPath;
+        return new DijkstraShortestPath(graph);
     }
 
     private static void setEdgeWeights(Standard distance,
@@ -65,19 +63,22 @@ public class ShortestPathMaker {
         }
     }
 
-    private static void setEdgeWeightsByDistance(List<Section> sections, WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
+    private static void setEdgeWeightsByDistance(List<Section> sections,
+                                                 WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
         for (Section section : sections) {
             graph.setEdgeWeight(makeEdge(graph, section), section.getKm());
         }
     }
 
-    private static void setEdgeWeightsByTime(List<Section> sections, WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
+    private static void setEdgeWeightsByTime(List<Section> sections,
+                                             WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
         for (Section section : sections) {
             graph.setEdgeWeight(makeEdge(graph, section), section.getMinute());
         }
     }
 
-    private static DefaultWeightedEdge makeEdge(WeightedMultigraph<Station, DefaultWeightedEdge> graph, Section section) {
+    private static DefaultWeightedEdge makeEdge(WeightedMultigraph<Station, DefaultWeightedEdge> graph,
+                                                Section section) {
         return graph.addEdge(section.getFirstStation(), section.getLastStation());
     }
 
