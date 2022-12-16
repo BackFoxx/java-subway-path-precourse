@@ -38,4 +38,8 @@ public class Station {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+    public boolean isName(String stationName) {
+        return name.equals(stationName);
+    }
 }
