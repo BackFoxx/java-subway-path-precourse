@@ -11,6 +11,7 @@ public class ControllerHolder {
     static {
         controllers.put(ControllerName.SETUP, new SetupController());
         controllers.put(ControllerName.MAIN, new MainController());
+        controllers.put(ControllerName.STANDARD, new SelectingStandardController());
     }
 
     public static Controller get(ControllerName controllerName) {

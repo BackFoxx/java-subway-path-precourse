@@ -1,5 +1,5 @@
 package subway.vo;
 
 public enum ControllerName {
-    MAIN, SETUP
+    MAIN, STANDARD, SETUP
 }
