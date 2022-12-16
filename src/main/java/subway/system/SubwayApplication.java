@@ -13,6 +13,12 @@ public class SubwayApplication {
     }
 
     public void run() {
+        setup();
+        ControllerHolder.get(ControllerName.MAIN).process();
+    }
+
+    private void setup() {
+        ReaderHolder.initializeReader(scanner);
         ControllerHolder.get(ControllerName.SETUP).process();
     }
 }
