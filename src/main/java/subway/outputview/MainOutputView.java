@@ -2,6 +2,8 @@ package subway.outputview;
 
 import subway.vo.command.MainCommand;
 
+import static subway.vo.OutputConstant.COMMAND_FORMAT;
+
 public class MainOutputView {
 
     public static final String MENU_MESSAGE = "## 메인 화면";
@@ -15,7 +17,7 @@ public class MainOutputView {
 
     private static void printMainCommands() {
         for (MainCommand mainCommand : MainCommand.values()) {
-            System.out.printf("%s. %s%n", mainCommand.getCommand(), mainCommand.getDescription());
+            System.out.printf(COMMAND_FORMAT, mainCommand.getCommand(), mainCommand.getDescription());
         }
     }
 

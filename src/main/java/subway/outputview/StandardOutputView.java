@@ -2,6 +2,8 @@ package subway.outputview;
 
 import subway.vo.command.StandardCommand;
 
+import static subway.vo.OutputConstant.COMMAND_FORMAT;
+
 public class StandardOutputView {
 
     public static final String ASKING_COMMAND_MESSAGE = "## 원하는 기능을 선택하세요.";
@@ -15,7 +17,7 @@ public class StandardOutputView {
 
     private static void printStandardCommands() {
         for (StandardCommand standardCommand : StandardCommand.values()) {
-            System.out.printf("%s. %s%n", standardCommand.getCommand(), standardCommand.getDescription());
+            System.out.printf(COMMAND_FORMAT, standardCommand.getCommand(), standardCommand.getDescription());
         }
     }
 
