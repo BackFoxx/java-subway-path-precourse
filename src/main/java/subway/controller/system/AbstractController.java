@@ -1,4 +1,4 @@
-package subway.controller;
+package subway.controller.system;
 
 import subway.outputview.ErrorMessageOutputView;
 

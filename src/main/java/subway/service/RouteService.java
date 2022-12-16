@@ -8,11 +8,16 @@ import subway.vo.PathResponse;
 import java.util.List;
 
 public class RouteService {
+
+    public static final String SAME_FIRST_LAST_STATION_EXCEPTION = "출발역과 도착역이 동일합니다.";
+
     public static PathResponse countRouteByDistance(Station firstStation, Station lastStation) {
+        Validator.validateOnCountingRoute(firstStation, lastStation);
         return ShortestPathMaker.getShortestPathByDistance(firstStation, lastStation);
     }
 
     public static PathResponse countRouteByTime(Station firstStation, Station lastStation) {
+        Validator.validateOnCountingRoute(firstStation, lastStation);
         return ShortestPathMaker.getShortestPathByTime(firstStation, lastStation);
     }
 
@@ -36,5 +41,13 @@ public class RouteService {
             );
         }
         return totalKms;
+    }
+
+    private static class Validator {
+        public static void validateOnCountingRoute(Station firstStation, Station lastStation) {
+            if (firstStation.equals(lastStation)) {
+                throw new IllegalArgumentException(SAME_FIRST_LAST_STATION_EXCEPTION);
+            }
+        }
     }
 }

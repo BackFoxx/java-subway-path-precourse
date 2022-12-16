@@ -13,6 +13,9 @@ import subway.vo.Standard;
 import java.util.List;
 
 public class ShortestPathMaker {
+
+    public static final String STATIONS_NOT_CONNECTED = "출발역과 도착역이 연결되지 않았습니다.";
+
     public static PathResponse getShortestPathByDistance(Station firstStation, Station lastStation) {
         DijkstraShortestPath dijkstraShortestPath = getShortestPathMaker(Standard.DISTANCE);
 
@@ -34,7 +37,11 @@ public class ShortestPathMaker {
     private static List<Station> getShortestPath(Station firstStation,
                                                 Station lastStation,
                                                 DijkstraShortestPath dijkstraShortestPath) {
-        return dijkstraShortestPath.getPath(firstStation, lastStation).getVertexList();
+        try {
+            return dijkstraShortestPath.getPath(firstStation, lastStation).getVertexList();
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException(STATIONS_NOT_CONNECTED);
+        }
     }
 
     private static DijkstraShortestPath getShortestPathMaker(Standard distance) {
