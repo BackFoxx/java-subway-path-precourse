@@ -31,4 +31,8 @@ public class StationRepository {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(STATION_NAME_NOT_EXISTING));
     }
+
+    public static List<Station> findAll() {
+        return Collections.unmodifiableList(stations);
+    }
 }

@@ -4,14 +4,34 @@ import subway.domain.Station;
 import subway.domain.StationRepository;
 import subway.inputview.RouteInputView;
 import subway.outputview.RouteOutputView;
+import subway.service.RouteService;
 import subway.system.ReaderHolder;
+import subway.vo.PathResponse;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RouteByDistanceController extends AbstractController {
     @Override
     public void doProcess() {
         Station firstStation = getFirstStation();
         Station lastStation = getLastStation();
-//        RouteService.countRouteByDistance(firstStation, lastStation);
+
+        PathResponse pathResponse = RouteService.countRouteByDistance(firstStation, lastStation);
+
+        printRouteResult(pathResponse);
+    }
+
+    private static void printRouteResult(PathResponse pathResponse) {
+        List<Station> shortestPath = pathResponse.getShortestPath();
+
+        List<String> stationNames = shortestPath
+                .stream().map(Station::getName)
+                .collect(Collectors.toList());
+        int km = pathResponse.getDistance();
+        int minute = RouteService.countMinutesOf(shortestPath);
+
+        RouteOutputView.printRouteResult(stationNames, km, minute);
     }
 
     private Station getLastStation() {
