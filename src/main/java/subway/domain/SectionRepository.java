@@ -22,11 +22,19 @@ public class SectionRepository {
     }
 
     public static int findMinuteByFirstAndLastStation(Station firstStation, Station lastStation) {
-        Section section = findAll()
+        Section section = findByFirstAndLastStation(firstStation, lastStation);
+        return section.getMinute();
+    }
+
+    public static int findKmByFirstAndLastStation(Station firstStation, Station lastStation) {
+        Section section = findByFirstAndLastStation(firstStation, lastStation);
+        return section.getKm();
+    }
+
+    private static Section findByFirstAndLastStation(Station firstStation, Station lastStation) {
+        return findAll()
                 .stream().filter(eachSection -> eachSection.isFirstStation(firstStation) && eachSection.isLastStation(lastStation))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(SECTION_NOT_EXISTING));
-
-        return section.getMinute();
     }
 }

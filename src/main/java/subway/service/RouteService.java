@@ -9,17 +9,32 @@ import java.util.List;
 
 public class RouteService {
     public static PathResponse countRouteByDistance(Station firstStation, Station lastStation) {
-        return ShortestPathMaker.getShortestPath(firstStation, lastStation);
+        return ShortestPathMaker.getShortestPathByDistance(firstStation, lastStation);
     }
 
-    public static int countMinutesOf(List<Station> stationNames) {
+    public static PathResponse countRouteByTime(Station firstStation, Station lastStation) {
+        return ShortestPathMaker.getShortestPathByTime(firstStation, lastStation);
+    }
+
+    public static int countTotalMinutesOf(List<Station> stations) {
         int totalMinute = 0;
-        for (int index = 0; index < stationNames.size() - 1; index++) {
+        for (int index = 0; index < stations.size() - 1; index++) {
             totalMinute += SectionRepository.findMinuteByFirstAndLastStation(
-                    stationNames.get(index),
-                    stationNames.get(index + 1)
+                    stations.get(index),
+                    stations.get(index + 1)
             );
         }
         return totalMinute;
+    }
+
+    public static int countTotalKmsOf(List<Station> stations) {
+        int totalKms = 0;
+        for (int index = 0; index < stations.size() - 1; index++) {
+            totalKms += SectionRepository.findKmByFirstAndLastStation(
+                    stations.get(index),
+                    stations.get(index + 1)
+            );
+        }
+        return totalKms;
     }
 }

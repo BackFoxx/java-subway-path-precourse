@@ -8,12 +8,22 @@ import subway.domain.SectionRepository;
 import subway.domain.Station;
 import subway.domain.StationRepository;
 import subway.vo.PathResponse;
+import subway.vo.Standard;
 
 import java.util.List;
 
 public class ShortestPathMaker {
-    public static PathResponse getShortestPath(Station firstStation, Station lastStation) {
-        DijkstraShortestPath dijkstraShortestPath = getShortestPathMaker();
+    public static PathResponse getShortestPathByDistance(Station firstStation, Station lastStation) {
+        DijkstraShortestPath dijkstraShortestPath = getShortestPathMaker(Standard.DISTANCE);
+
+        double distance = dijkstraShortestPath.getPathWeight(firstStation, lastStation);
+        List<Station> shortestPath = getShortestPath(firstStation, lastStation, dijkstraShortestPath);
+
+        return new PathResponse(shortestPath, distance);
+    }
+
+    public static PathResponse getShortestPathByTime(Station firstStation, Station lastStation) {
+        DijkstraShortestPath dijkstraShortestPath = getShortestPathMaker(Standard.TIME);
 
         double distance = dijkstraShortestPath.getPathWeight(firstStation, lastStation);
         List<Station> shortestPath = getShortestPath(firstStation, lastStation, dijkstraShortestPath);
@@ -27,19 +37,36 @@ public class ShortestPathMaker {
         return dijkstraShortestPath.getPath(firstStation, lastStation).getVertexList();
     }
 
-    private static DijkstraShortestPath getShortestPathMaker() {
+    private static DijkstraShortestPath getShortestPathMaker(Standard distance) {
         List<Section> sections = SectionRepository.findAll();
         WeightedMultigraph<Station, DefaultWeightedEdge> graph = new WeightedMultigraph(DefaultWeightedEdge.class);
         addVertexes(graph);
-        setEdgeWeights(sections, graph);
+        setEdgeWeights(distance, sections, graph);
 
         DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
         return dijkstraShortestPath;
     }
 
-    private static void setEdgeWeights(List<Section> sections, WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
+    private static void setEdgeWeights(Standard distance,
+                                       List<Section> sections,
+                                       WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
+        if (distance == Standard.DISTANCE) {
+            setEdgeWeightsByDistance(sections, graph);
+        }
+        if (distance == Standard.TIME) {
+            setEdgeWeightsByTime(sections, graph);
+        }
+    }
+
+    private static void setEdgeWeightsByDistance(List<Section> sections, WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
         for (Section section : sections) {
             graph.setEdgeWeight(makeEdge(graph, section), section.getKm());
+        }
+    }
+
+    private static void setEdgeWeightsByTime(List<Section> sections, WeightedMultigraph<Station, DefaultWeightedEdge> graph) {
+        for (Section section : sections) {
+            graph.setEdgeWeight(makeEdge(graph, section), section.getMinute());
         }
     }
 

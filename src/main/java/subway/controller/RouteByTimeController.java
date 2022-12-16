@@ -11,13 +11,13 @@ import subway.vo.PathResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RouteByDistanceController extends AbstractController {
+public class RouteByTimeController extends AbstractController {
     @Override
     public void doProcess() {
         Station firstStation = getFirstStation();
         Station lastStation = getLastStation();
 
-        PathResponse pathResponse = RouteService.countRouteByDistance(firstStation, lastStation);
+        PathResponse pathResponse = RouteService.countRouteByTime(firstStation, lastStation);
 
         printRouteResult(pathResponse);
     }
@@ -28,8 +28,8 @@ public class RouteByDistanceController extends AbstractController {
         List<String> stationNames = shortestPath
                 .stream().map(Station::getName)
                 .collect(Collectors.toList());
-        int km = pathResponse.getDistance();
-        int minute = RouteService.countTotalMinutesOf(shortestPath);
+        int km = RouteService.countTotalKmsOf(shortestPath);
+        int minute = pathResponse.getDistance();
 
         RouteOutputView.printRouteResult(stationNames, km, minute);
     }

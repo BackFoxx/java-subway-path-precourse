@@ -11,11 +11,15 @@ public class SelectingStandardController extends AbstractController {
     public void doProcess() {
         StandardOutputView.printCommands();
         StandardCommand command = StandardInputView.getCommand(ReaderHolder.getReader());
+        findRouteByDistance(command);
+        if (command == StandardCommand.TIME) {
+            ControllerHolder.get(ControllerName.ROUTE_BY_TIME).process();
+        }
+    }
+
+    private static void findRouteByDistance(StandardCommand command) {
         if (command == StandardCommand.DISTANCE) {
             ControllerHolder.get(ControllerName.ROUTE_BY_DISTANCE).process();
-        }
-        if (command == StandardCommand.TIME) {
-
         }
     }
 }

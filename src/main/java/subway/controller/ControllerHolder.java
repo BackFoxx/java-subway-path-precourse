@@ -13,6 +13,7 @@ public class ControllerHolder {
         controllers.put(ControllerName.MAIN, new MainController());
         controllers.put(ControllerName.STANDARD, new SelectingStandardController());
         controllers.put(ControllerName.ROUTE_BY_DISTANCE, new RouteByDistanceController());
+        controllers.put(ControllerName.ROUTE_BY_TIME, new RouteByTimeController());
     }
 
     public static Controller get(ControllerName controllerName) {
