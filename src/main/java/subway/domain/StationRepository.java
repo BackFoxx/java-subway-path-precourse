@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class StationRepository {
     private static final List<Station> stations = new ArrayList<>();
+    public static final String STATION_NAME_NOT_EXISTING = "존재하지 않는 역 이름입니다.";
 
     public static List<Station> stations() {
         return Collections.unmodifiableList(stations);
@@ -22,5 +23,16 @@ public class StationRepository {
 
     public static void deleteAll() {
         stations.clear();
+    }
+
+    public static Station findByName(String firstStationName) {
+        return stations.stream()
+                .filter(station -> station.isName(firstStationName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(STATION_NAME_NOT_EXISTING));
+    }
+
+    public static List<Station> findAll() {
+        return Collections.unmodifiableList(stations);
     }
 }
