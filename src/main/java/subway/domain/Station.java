@@ -15,6 +15,10 @@ public class Station {
 
     // 추가 기능 구현
 
+    public boolean isName(String stationName) {
+        return name.equals(stationName);
+    }
+
     @Override
     public String toString() {
         return "Station{" +
@@ -37,9 +41,5 @@ public class Station {
     @Override
     public int hashCode() {
         return Objects.hash(name);
-    }
-
-    public boolean isName(String stationName) {
-        return name.equals(stationName);
     }
 }
